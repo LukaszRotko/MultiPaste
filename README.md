@@ -1,191 +1,136 @@
-# MultiPaste
-PasteDeck 🧩
+# MultiPaste 🚀
 
-Fast, keyboard-driven multi-paste & snippet manager
+**MultiPaste** is a lightweight background clipboard & snippet manager designed for fast, keyboard-driven workflows.  
+Paste predefined snippets, manage multiple profiles (configs), and access your clipboard history — all from a minimal popup UI.
 
-PasteDeck is a lightweight desktop utility that lets you paste predefined snippets, clipboard history items, and custom fields instantly — without breaking your workflow.
+Built for developers, recruiters, power users, and anyone who pastes the same things over and over again.
 
-Designed for speed, keyboard navigation, and background usage, PasteDeck lives quietly in your system tray and appears exactly when you need it.
 
-✨ Key Features
-🔹 Snippet-based multi-paste
 
-Store reusable text snippets (e.g. CV fields, emails, templates)
+## ✨ Features
 
-Paste any value instantly with keyboard navigation
+### 🔹 Snippet-based multi-paste
+- Store key → value pairs (e.g. `email`, `github`, `linkedin`)
+- Paste values instantly using keyboard navigation
+- No need to copy first — just select and paste
 
-Organize snippets using multiple JSON configs (profiles)
+### 🔹 Multiple configs (profiles)
+- Separate configs for:
+  - CV / job applications
+  - Work / private use
+  - Different languages or contexts
+- Active config is remembered between app launches
+- Easy switching from dropdown menu
 
-🔹 Popup UI near your cursor
+### 🔹 Built-in config editor
+- Add, edit, and remove snippet entries
+- JSON-based storage (human readable & portable)
+- Editor opens in a separate modal window
+- Safe focus handling (ESC behavior, no accidental closes)
 
-Appears next to the mouse position
+### 🔹 Clipboard history (planned / v1 target)
+- Automatically save recent `Ctrl+C` entries
+- Configurable maximum history size
+- Optional auto-record toggle
+- Manual record shortcut (e.g. `Ctrl+C+Alt`)
+- Clear single or all history entries
+- Convert clipboard history into a reusable config
 
-Fully keyboard-driven (arrows + Enter)
+### 🔹 Persistent mode
+- Keep popup open after pasting
+- Paste multiple items without reopening the UI
 
-Searchable list with instant filtering
+### 🔹 Fast keyboard navigation
+- Arrow keys to navigate grid
+- Enter to paste
+- ESC to close (editor first, popup second)
+- Search-as-you-type filtering
 
-🔹 Multiple configs (profiles)
+### 🔹 Runs in background
+- System tray integration
+- Global hotkeys
+- Always available, never in the way
 
-Separate configs for:
 
-CV / job applications
 
-Work
+## 🖥️ How it works
 
-Personal use
+- Press **Ctrl + Alt** to open the popup near your cursor
+- Choose what you want to paste
+- Hit **Enter** — done
+- No mouse required
 
-Active config persists between sessions
+Configs and data are stored as simple `.json` files inside the `configs/` directory.
+More in-depth instructions to all features are included in Instructions.txt in the main folder.
 
-🔹 Config editor (built-in)
 
-Add / edit / remove fields visually
 
-Changes are saved directly to JSON
+## 📂 Project structure (simplified)
 
-No need to edit files manually
+```text
+MultiPaste/
+├─ configs/
+│  ├─ default.json
+│  ├─ active_config.json
+│  └─ your_other_configs.json
+├─ main.py
+└─ README.md
+```
 
-🔹 Persistent mode
+## 🔐 Privacy & Security
 
-Paste multiple items without closing the popup
+- ❌ No cloud
+- ❌ No telemetry
+- ❌ No background uploads
+- ✅ Everything stays **on your machine**
 
-Ideal for filling long forms
+MultiPaste never sends or stores your data anywhere outside your computer.
 
-🔹 Runs in background
 
-Tray icon (Show / Quit)
 
-Global hotkeys
+## 🤝 Contributing
 
-Minimal system footprint
+Contributions are welcome ❤️
 
-🧠 Clipboard History (Planned / v1+)
+You can:
+- Report bugs
+- Suggest features
+- Submit pull requests
 
-PasteDeck is evolving beyond static snippets.
 
-Upcoming features include:
+## 📜 License
 
-📋 Clipboard history tracking
+This project is licensed under a **non-commercial open source license**.
 
-Automatically save copied text (Ctrl+C)
+✔ Free for personal use  
+✔ Source code visible  
+✔ Community contributions allowed  
 
-Optional toggle (on/off)
+❌ Commercial use not allowed  
+❌ Repackaging / selling not allowed  
 
-Alternative shortcut (e.g. Ctrl+Alt+C)
+See the `LICENSE` file for full details.
 
-🧹 Manage recent clipboard items
+---
 
-Remove single entries
+## 👤 Author
 
-Clear all
+Created by **Łukasz Rotko**
 
-Set max history size (FIFO)
+If you like the project:
+- ⭐ Star the repository  
+- 💬 Share feedback  
+- 🛠️ Contribute ideas or code  
 
-🔀 Merge clipboard entries
+---
 
-Combine multiple clipboard items into one snippet
+## 🛣️ Roadmap (v1)
 
-📦 Convert clipboard history into a regular config
+- [ ] Clipboard history with limits  
+- [ ] Clipboard → config merge  
+- [ ] Config duplication & deletion  
+- [ ] Improved config management UI  
+- [ ] Windows executable build  
 
-Duplicate / merge into existing snippet profiles
+---
 
-⌨️ Default Shortcuts
-Action	Shortcut
-Show popup	Ctrl + Alt
-Navigate	Arrow keys
-Paste	Enter
-Close popup	Esc
-Persistent paste	Toggle in UI
-
-(Shortcuts will be configurable in future versions)
-
-🗂️ Project Structure
-PasteDeck/
-├── configs/
-│   ├── default.json
-│   ├── active_config.json
-│   └── other_profiles.json
-├── main.py
-├── README.md
-└── LICENSE
-
-🛠️ Tech Stack
-
-Python
-
-Tkinter (UI)
-
-pynput (global hotkeys)
-
-pyperclip (clipboard access)
-
-pystray (system tray)
-
-JSON-based storage
-
-No external services. No telemetry. Fully offline.
-
-🚧 Roadmap
-v1
-
-✅ Multi-paste popup
-
-✅ Multiple configs
-
-✅ Config editor
-
-✅ Persistent mode
-
-✅ Tray app
-
-v1.1+
-
-⏳ Clipboard history
-
-⏳ Clipboard merge
-
-⏳ Config CRUD (add / duplicate / delete)
-
-⏳ Import / export configs
-
-⏳ Settings panel
-
-🤝 Contributing
-
-Contributions are welcome!
-
-You can help by:
-
-Reporting bugs
-
-Proposing UX improvements
-
-Implementing new features
-
-Refactoring / cleanup
-
-Please open an issue or submit a pull request.
-
-Note: This project uses a non-commercial license.
-Contributions are accepted under the same license.
-
-📄 License
-
-This project is licensed under a Non-Commercial Open Source License.
-
-✔ Free to use
-
-✔ Source code visible
-
-✔ Contributions allowed
-
-❌ Commercial use forbidden
-
-❌ Repackaging / selling forbidden
-
-See LICENSE file for details.
-
-👤 Author
-
-Created by Łukasz Rotko
-
-If you like the idea or use it daily — ⭐ the repo!
