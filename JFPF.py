@@ -7,7 +7,7 @@ import threading
 import time
 import os
 import pystray
-from PIL import Image, ImageDraw
+from PIL import Image
 import sys
 
 from pynput import mouse
@@ -79,6 +79,7 @@ def save_active_config(data):
 def list_configs():
     return [f for f in os.listdir(CONFIG_DIR) if f.endswith(".json")]
 
+
 def get_config_path():
     if getattr(sys, 'frozen', False):
         return os.path.join(sys._MEIPASS, "config.json")
@@ -100,9 +101,9 @@ def save_config(data):
     with open("configs/config.json", "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
+
 ensure_configs()
 DATA = load_active_config()
-
 
 keyboard_controller = Controller()
 
@@ -146,7 +147,6 @@ class ConfigEditor(tk.Toplevel):
 
         self.rows_container = tk.Frame(body, bg=BG)
         self.rows_container.pack()
-
 
         for key, value in parent.data.items():
             self.add_row(key, value)
@@ -209,6 +209,7 @@ class ConfigEditor(tk.Toplevel):
         self.parent.editor_open = False
         self.parent.editor_window = None
         self.destroy()
+
     def create_new_config(self):
         name = simpledialog.askstring("New config", "Config name:")
         if not name:
@@ -238,7 +239,7 @@ class ConfigEditor(tk.Toplevel):
 class PopupUI:
     def __init__(self):
         self.root = tk.Tk()
-        self.root.title("CV Autofill")
+        self.root.title("MultiPaste")
 
         self.root.overrideredirect(True)
         self.root.attributes("-topmost", True)
@@ -279,7 +280,7 @@ class PopupUI:
 
         tk.Label(
             header,
-            text="CV Autofill",
+            text="MultiPaste",
             bg=HEADER,
             fg=TEXT_MUTED,
             font=("Segoe UI", 9, "bold")
@@ -618,9 +619,12 @@ class PopupUI:
 
 
 def create_icon():
-    img = Image.new("RGB", (64, 64), color=(30, 30, 30))
-    d = ImageDraw.Draw(img)
-    d.rectangle((16, 16, 48, 48), fill=(110, 160, 255))
+    # Load PNG icon
+    img = Image.open("icon_32.png").convert("RGBA")
+
+    # # Ensure correct size
+    # img = img.resize((32, 32), Image.LANCZOS)
+
     return img
 
 
@@ -636,9 +640,11 @@ def on_show(icon, item):
 
 def tray_thread():
     icon = pystray.Icon(
-        "CV Autofill",
+        "MultiPaste",
         create_icon(),
         menu=pystray.Menu(
+            pystray.MenuItem("MultiPaste", None, enabled=False),
+            pystray.Menu.SEPARATOR,
             pystray.MenuItem("Show", on_show),
             pystray.MenuItem("Quit", on_quit)
         )
