@@ -1,5 +1,7 @@
-# MultiPaste 🚀
 
+<img width="1024" height="1024" alt="MultiPasteLogo" src="https://github.com/user-attachments/assets/c27d2e93-95a6-44c0-815c-fc3dedf4b2e3" />
+
+# MultiPaste 
 **MultiPaste** is a lightweight background clipboard & snippet manager designed for fast, keyboard-driven workflows.  
 Paste predefined snippets, manage multiple profiles (configs), and access your clipboard history — all from a minimal popup UI.
 
