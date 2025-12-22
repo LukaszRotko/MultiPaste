@@ -57,6 +57,4 @@ class ConfigManager:
         self.set_active(name)
         return True
 
-    def set_active_config(self,name):
-        with open(self.active_file, "w", encoding="utf-8") as f:
-            json.dump({"active": name}, f)
+

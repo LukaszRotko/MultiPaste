@@ -107,16 +107,19 @@ class PopupUI:
         self.render_buttons()
 
     def on_config_change(self, name):
-        self.config_manager.set_active_config(name)
-        self.data = self.config_manager.load_active_config()
+        self.config_manager.set_active(name)
+        self.data = self.config_manager.load_active()
         self.update_list()
 
     def open_editor(self):
         if self.editor_open:
             return
-
-        self.editor_window = self.config_manager.ConfigEditor(self)
+        self.editor_window = ConfigEditor(self, self.config_manager)
         self.editor_open = True
+
+    def reload_config(self):
+        self.data = self.config_manager.load_active()
+        self.update_list()
 
     def safe_call(self, fn, *args):
         self.root.after(0, lambda: fn(*args))
@@ -288,7 +291,6 @@ class PopupUI:
             elif key == keyboard.Key.enter:
                 self.safe_call(self.paste_selected)
             elif key == keyboard.Key.esc:
-
                 if self.editor_open and self.editor_window:
                     self.safe_call(self.editor_window.close)
                 else:
@@ -327,7 +329,6 @@ class PopupUI:
     def on_escape(self):
         if self.editor_open:
             return
-        print(self.editor_open)
         self.hide()
 
     def hide(self):
@@ -348,3 +349,90 @@ class PopupUI:
 
     # Dla oszczędności miejsca tu nie kopiuję wszystkich metod; w implementacji przenieś metody z istniejącego `PopupUI`
     # i zamień bezpośrednie wywołania funkcji do zapisu/odczytu i paste_text na self.config_manager / self.clipboard.
+
+class ConfigEditor(tk.Toplevel):
+    def __init__(self, parent, config_manager):
+        super().__init__(parent.root)
+        self.parent = parent
+        self.config_manager = config_manager
+
+        self.title("Edit config")
+        self.configure(bg=BG)
+        self.resizable(False, False)
+        self.grab_set()
+
+        self.entries = []
+
+        body = tk.Frame(self, bg=BG)
+        body.pack(padx=12, pady=12)
+
+        self.rows_container = tk.Frame(body, bg=BG)
+        self.rows_container.pack()
+
+        self.bind("<Escape>", lambda e: self.close())
+        self.protocol("WM_DELETE_WINDOW", self.close)
+
+        # load current config
+        data = self.config_manager.load_active()
+        for k, v in data.items():
+            self.add_row(k, v)
+
+        controls = tk.Frame(body, bg=BG)
+        controls.pack(pady=10)
+
+        tk.Button(
+            controls, text="+ Add",
+            command=lambda: self.add_row("", "")
+        ).pack(side="left", padx=4)
+
+        tk.Button(
+            controls, text="Save",
+            command=self.save
+        ).pack(side="left", padx=4)
+
+        tk.Button(
+            controls, text="Close",
+            command=self.close
+        ).pack(side="left", padx=4)
+
+    def add_row(self, key="", value=""):
+        row = tk.Frame(self.rows_container, bg=BG)
+        row.pack(fill="x", pady=3)
+
+        k = tk.Entry(row, width=16)
+        k.insert(0, key)
+        k.pack(side="left", padx=4)
+
+        v = tk.Entry(row, width=32)
+        v.insert(0, value)
+        v.pack(side="left", padx=4)
+
+        remove = tk.Button(
+            row, text="✕", width=2,
+            command=lambda r=row: self.remove_row(r)
+        )
+        remove.pack(side="left", padx=4)
+
+        self.entries.append((row, k, v))
+
+    def remove_row(self, row):
+        self.entries = [e for e in self.entries if e[0] != row]
+        row.destroy()
+
+    def save(self):
+        new_data = {}
+        for _, k_entry, v_entry in self.entries:
+            k = k_entry.get().strip()
+            v = v_entry.get().strip()
+            if k:
+                new_data[k] = v
+
+        self.config_manager.save_active(new_data)
+        self.parent.data = new_data
+        self.parent.update_list()
+
+    def close(self):
+        self.parent.editor_open = False
+        self.parent.editor_window = None
+        self.destroy()
+
